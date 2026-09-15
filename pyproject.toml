@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toolbox-container"
+version = "1.0.0"
+description = "A multi-purpose utility container CLI demonstrating the Docker utility-container pattern"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "Pillow==10.4.0",
+    "jsonschema==4.23.0",
+]
+
+[project.scripts]
+# Installing this package creates a `toolbox` executable on PATH, which is
+# exactly what lets the Dockerfile set ENTRYPOINT ["toolbox"] instead of
+# ENTRYPOINT ["python", "-m", "toolbox.cli"] - the image behaves like a
+# native binary, not "a Python script wrapped in Docker".
+toolbox = "toolbox.cli:main"
+
+[tool.setuptools]
+packages = ["toolbox"]

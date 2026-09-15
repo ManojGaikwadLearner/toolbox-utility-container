@@ -1,0 +1,36 @@
+# Version control
+.git
+.gitignore
+.github
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated output from running the tools locally (never bake this into the image)
+sample-data/csv/*.json
+sample-data/csv/checksums.txt
+sample-data/json/checksums.txt
+sample-data/images-out/
+
+# Editor/OS cruft
+.vscode/
+.idea/
+.DS_Store
+
+# Misc
+*.log
+README.md

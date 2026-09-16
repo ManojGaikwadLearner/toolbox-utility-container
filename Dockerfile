@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir --user .
 # =============================================================================
 FROM builder AS test
 
-COPY requirements-dev.txt ./
+COPY requirements.txt requirements-dev.txt ./
 RUN pip install --no-cache-dir --user -r requirements-dev.txt
 
 COPY tests/ ./tests/
@@ -54,7 +54,7 @@ LABEL maintainer="you@example.com" \
       org.opencontainers.image.description="Ephemeral multi-purpose CLI utility container: CSV/JSON conversion, image resizing, file hashing, TCP wait-for, and JSON Schema linting" \
       org.opencontainers.image.version="1.0.0" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/<your-username>/toolbox-container"
+      org.opencontainers.image.source="https://github.com/ManojGaikwadLearner/toolbox-utility-container"
 
 RUN groupadd --gid 1000 toolbox \
     && useradd --uid 1000 --gid toolbox --shell /bin/bash --create-home toolbox

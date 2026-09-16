@@ -1,0 +1,40 @@
+services:
+  # The utility container itself. It has no `ports` and no long-running
+  # process - it's meant to be invoked as a one-off job, e.g.:
+  #
+  #   docker compose run --rm toolbox hash-files /data/csv
+  #   docker compose run --rm toolbox convert-csv-json /data/csv/sample.csv /data/csv/sample.json
+  #   docker compose run --rm toolbox lint-json /data/json --schema /data/json-schema.json
+  #   docker compose run --rm toolbox resize-image --in-dir /data/images --out-dir /data/images-out
+  #
+  # It's placed in the "tools" profile so a plain `docker compose up` does
+  # NOT start it - only `docker compose run --rm toolbox ...` invokes it.
+  toolbox:
+    build: .
+    image: toolbox-container:latest
+    profiles: ["tools"]
+    volumes:
+      - ./sample-data:/data
+
+  # --- A realistic multi-service stack that USES the toolbox pattern ---
+  # `db` and `api` demonstrate `wait-for` as a genuine orchestration
+  # primitive: `api`'s own entrypoint blocks on `toolbox wait-for db:5432`
+  # before starting its server, instead of relying solely on Compose's
+  # `depends_on` (which only waits for the `db` container to *start*, not
+  # for Postgres inside it to actually be accepting connections).
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=example
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    build: ./example-api
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+
+volumes:
+  db-data:
